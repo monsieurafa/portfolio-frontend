@@ -22,12 +22,13 @@ import {
 } from "lucide-react"
 import Image from "next/image"
 import profilePhoto from "/public/profile-photo.jpg"
+import { useTheme } from "@/contexts/ThemeContext";
 
 export default function CVPortfolio() {
   const [activeSection, setActiveSection] = useState("about")
   const [isScrolled, setIsScrolled] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const { isDarkMode, toggleDarkMode } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,14 +45,6 @@ export default function CVPortfolio() {
     window.addEventListener("mousemove", handleMouseMove)
     return () => window.removeEventListener("mousemove", handleMouseMove)
   }, [])
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark")
-    } else {
-      document.documentElement.classList.remove("dark")
-    }
-  }, [isDarkMode])
 
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId)
@@ -150,7 +143,7 @@ export default function CVPortfolio() {
 
         <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
           <button
-            onClick={() => setIsDarkMode(!isDarkMode)}
+            onClick={toggleDarkMode}
             className="bg-white/10 border border-white/20 text-white hover:bg-white/20 backdrop-blur-sm p-2 sm:px-3 sm:py-2 rounded-lg transition-all duration-300"
           >
             {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}

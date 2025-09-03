@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import { ArrowLeft, Activity, Zap, Clock, AlertTriangle, CheckCircle, Moon, Sun, User } from "lucide-react"
 import { useRouter } from "next/navigation"
-
+import { useTheme } from '@/contexts/ThemeContext';
 // Import the existing components from read-only files
 import RealtimeChart from "@/components/ui/RealtimeChart"
 
@@ -16,7 +16,7 @@ type Prediction = {
 
 export default function EarthquakeDetection() {
   const router = useRouter()
-  const [isDarkMode, setIsDarkMode] = useState(false)
+  const { isDarkMode, toggleDarkMode } = useTheme();
 
   // State for waveform data
   const [ch1, setCh1] = useState<number[]>([])
@@ -31,14 +31,6 @@ export default function EarthquakeDetection() {
   const [stationId, setStationId] = useState<string | null>(null)
 
   const websocket = useRef<WebSocket | null>(null)
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark")
-    } else {
-      document.documentElement.classList.remove("dark")
-    }
-  }, [isDarkMode])
 
   const connectWebSocket = () => {
     const ws = new WebSocket("wss://rafamaritza-eews-creime-monitor.hf.space/ws/123");
@@ -90,7 +82,7 @@ export default function EarthquakeDetection() {
           </button>
 
           <button
-            onClick={() => setIsDarkMode(!isDarkMode)}
+            onClick={toggleDarkMode}
             className="px-4 py-3 bg-card border border-border rounded-lg hover:bg-muted hover:scale-105 transition-all duration-300 shadow-md"
           >
             {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
