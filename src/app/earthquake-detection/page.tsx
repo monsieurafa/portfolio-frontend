@@ -29,20 +29,21 @@ export default function EarthquakeDetection() {
   const [prediction, setPrediction] = useState<Prediction | null>(null)
 
   // State for connection status and station name
-  const [isConnected, setIsConnected] = useState(false)
+  const [connectionState, setConnectionState] = useState<"connecting" | "waiting" | "live">("connecting")
   const [stationId, setStationId] = useState<string | null>(null)
 
   useEffect(() => {
     const source = new EventSource(EVENTS_URL)
-    source.onerror = () => setIsConnected(false)
+    source.onopen = () => setConnectionState("waiting")
+    source.onerror = () => setConnectionState("connecting")
     source.addEventListener("status", (event) => {
       const status = JSON.parse(event.data) as { receiving_data: boolean }
-      setIsConnected(status.receiving_data)
+      setConnectionState(status.receiving_data ? "live" : "waiting")
     })
     source.onmessage = (event) => {
       const message = JSON.parse(event.data)
       if (message.type === "new_data_window") {
-        setIsConnected(true)
+        setConnectionState("live")
         const data = message.data
         // Update waveform states
         setCh1(data.ch1)
@@ -121,17 +122,17 @@ export default function EarthquakeDetection() {
             <div className="bg-card p-4 rounded-xl shadow-lg border border-border">
               <div className="flex items-center gap-3">
                 <div className="relative flex h-3 w-3">
-                  {isConnected && (
+                  {connectionState === "live" && (
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                   )}
                   <span
                     className={`relative inline-flex rounded-full h-3 w-3 ${
-                      isConnected ? "bg-green-500" : "bg-red-500"
+                      connectionState === "live" ? "bg-green-500" : "bg-amber-500"
                     }`}
                   ></span>
                 </div>
                 <span className="font-semibold text-card-foreground">
-                  {isConnected ? "Live Connection" : "Disconnected"}
+                  {connectionState === "live" ? "Live Connection" : connectionState === "waiting" ? "Waiting for data" : "Connecting..."}
                 </span>
               </div>
             </div>
@@ -157,7 +158,8 @@ export default function EarthquakeDetection() {
                   <Activity className="w-16 h-16 animate-pulse text-primary" />
                 </div>
                 <h3 className="text-2xl font-semibold mb-2">Waiting for Seismometer Data</h3>
-                <p className="text-lg">Establishing connection to monitoring station...</p>
+                <p className="text-lg">Establishing connection to the monitoring station...</p>
+                <p className="mt-2 text-sm">The free seismic service may take a minute to wake. This page reconnects automatically.</p>
                 <div className="flex items-center gap-2 mt-4">
                   <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
                   <div
@@ -204,7 +206,7 @@ export default function EarthquakeDetection() {
                       : "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300"
                   }`}
                 >
-                  {prediction && prediction.isEvent === 1 ? "Alert Active" : "Monitoring"}
+                  {prediction && prediction.isEvent === 1 ? "Experimental detection" : "Monitoring"}
                 </span>
               </div>
             </div>
@@ -216,14 +218,14 @@ export default function EarthquakeDetection() {
                 <div className="p-3 bg-orange-100 dark:bg-orange-900/30 rounded-xl">
                   <Zap className="w-6 h-6 text-orange-500" />
                 </div>
-                <h3 className="text-xl font-bold">Magnitude</h3>
+                <h3 className="text-xl font-bold">Magnitude Proxy</h3>
               </div>
               <div className="text-center">
                 <div className="text-4xl font-bold mb-4 text-orange-500">
                   {prediction && prediction.magnitude !== null ? prediction.magnitude.toFixed(2) : "-"}
                 </div>
                 <span className="px-4 py-2 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-full text-sm font-semibold">
-                  Body-Wave Magnitude
+                  Uncalibrated model output
                 </span>
               </div>
             </div>
@@ -272,8 +274,8 @@ export default function EarthquakeDetection() {
                 <p className="text-muted-foreground">Live data processing and analysis</p>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-primary mb-2">Early Warning</div>
-                <p className="text-muted-foreground">Rapid earthquake detection and alerts</p>
+                <div className="text-3xl font-bold text-primary mb-2">Research Demo</div>
+                <p className="text-muted-foreground">Experimental predictions from live seismic data</p>
               </div>
             </div>
           </div>
