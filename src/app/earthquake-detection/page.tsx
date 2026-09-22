@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { ArrowLeft, Activity, Zap, Clock, AlertTriangle, CheckCircle, Moon, Sun, User } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useTheme } from '@/contexts/ThemeContext';
@@ -13,6 +13,8 @@ type Prediction = {
   magnitude: number | null
   pArrival: number | null
 }
+
+const EVENTS_URL = `${(process.env.NEXT_PUBLIC_SEISMIC_API_URL ?? "https://rafamaritza-eews-creime-monitor.hf.space").replace(/\/$/, "")}/events`
 
 export default function EarthquakeDetection() {
   const router = useRouter()
@@ -30,18 +32,17 @@ export default function EarthquakeDetection() {
   const [isConnected, setIsConnected] = useState(false)
   const [stationId, setStationId] = useState<string | null>(null)
 
-  const websocket = useRef<WebSocket | null>(null)
-
-  const connectWebSocket = () => {
-    const ws = new WebSocket("wss://rafamaritza-eews-creime-monitor.hf.space/ws/123");
-    ws.onopen = () => setIsConnected(true)
-    ws.onclose = () => {
-      setIsConnected(false)
-      setTimeout(() => connectWebSocket(), 3000)
-    }
-    ws.onmessage = (event) => {
+  useEffect(() => {
+    const source = new EventSource(EVENTS_URL)
+    source.onerror = () => setIsConnected(false)
+    source.addEventListener("status", (event) => {
+      const status = JSON.parse(event.data) as { receiving_data: boolean }
+      setIsConnected(status.receiving_data)
+    })
+    source.onmessage = (event) => {
       const message = JSON.parse(event.data)
       if (message.type === "new_data_window") {
+        setIsConnected(true)
         const data = message.data
         // Update waveform states
         setCh1(data.ch1)
@@ -59,12 +60,7 @@ export default function EarthquakeDetection() {
         })
       }
     }
-    websocket.current = ws
-  }
-
-  useEffect(() => {
-    connectWebSocket()
-    return () => websocket.current?.close()
+    return () => source.close()
   }, [])
 
   return (
