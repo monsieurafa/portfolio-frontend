@@ -96,8 +96,8 @@ export default function EarthquakeDetection() {
           </div>
 
           <p className="text-xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
-            Advanced neural network-based earthquake detection system analyzing real-time seismograph data from
-            Indonesian monitoring stations for early warning and magnitude prediction.
+            A research demonstration of neural network earthquake detection using live seismograph data from
+            the II.KAPI station in Sulawesi, Indonesia.
           </p>
 
           <div className="flex flex-wrap justify-center items-center gap-6">
@@ -106,7 +106,7 @@ export default function EarthquakeDetection() {
                 <span className="px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold">
                   CREIME Model
                 </span>
-                <span className="text-muted-foreground font-medium">Indonesia Network</span>
+                <span className="text-muted-foreground font-medium">Sulawesi, Indonesia</span>
               </div>
             </div>
 
@@ -258,10 +258,9 @@ export default function EarthquakeDetection() {
               <h3 className="text-2xl font-bold">About This Project</h3>
             </div>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              This earthquake detection system represents the culmination of my thesis research, utilizing
-              state-of-the-art neural networks to analyze real-time seismograph data from Indonesian earthquake
-              monitoring stations. The system provides critical early warning capabilities through advanced magnitude
-              prediction and precise P-wave arrival detection.
+              This earthquake detection system presents my thesis research using a neural network to analyze
+              live data from a station in Sulawesi. It displays experimental event predictions and estimated
+              P-wave arrival positions; it is a research demonstration rather than an operational warning service.
             </p>
             <div className="grid md:grid-cols-3 gap-6 mt-8">
               <div className="text-center">
