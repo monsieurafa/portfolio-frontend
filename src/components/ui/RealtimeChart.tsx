@@ -1,16 +1,14 @@
-// src/components/ui/RealtimeChart.tsx
 "use client"
 
 import type React from "react"
 import {
-  LineChart,
+  CartesianGrid,
   Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  CartesianGrid,
 } from "recharts"
 
 interface RealtimeChartProps {
@@ -21,69 +19,48 @@ interface RealtimeChartProps {
 
 const RealtimeChart: React.FC<RealtimeChartProps> = ({ ch1, ch2, ch3 }) => {
   const chartData = (ch1 || []).map((value, index) => ({
-    index: index,
+    index,
     BHE: value,
     BHN: ch2?.[index] ?? 0,
     BHZ: ch3?.[index] ?? 0,
   }))
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
-      <LineChart
-        data={chartData}
-        // UPDATED: Increased bottom margin to create more space
-        margin={{
-          top: 10,
-          right: 30,
-          left: 20,
-          bottom: 50, // Increased from 30 to 50
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-
-        <Tooltip
-          labelStyle={{ color: "#333" }}
-          contentStyle={{
-            background: "rgba(255, 255, 255, 0.8)",
-            border: "1px solid #ccc",
-            borderRadius: "0.5rem",
-          }}
-        />
-
-        {/* UPDATED: Aligned legend to the bottom to better use the new space */}
-        <Legend verticalAlign="bottom" wrapperStyle={{ paddingTop: "10px"}} />
-
-        <XAxis
-          dataKey="index"
-          label={{
-            value: "Sample Index",
-            position: "bottom",
-            fill: "#A0AEC0",
-            dy: -10,
-          }}
-          tick={{ fill: "#718096", fontSize: 12 }}
-          tickLine={false}
-          axisLine={{ stroke: "#cccccc" }}
-        />
-
-        <YAxis
-          label={{
-            value: "Amplitude",
-            angle: -90,
-            position: "insideLeft",
-            fill: "#A0AEC0",
-            dx: -10,
-          }}
-          tick={{ fill: "#718096", fontSize: 12 }}
-          tickLine={false}
-          axisLine={{ stroke: "#cccccc" }}
-        />
-
-        <Line type="monotone" dataKey="BHE" name="Channel E" stroke="#8884d8" dot={false} strokeWidth={2} isAnimationActive={false} />
-        <Line type="monotone" dataKey="BHN" name="Channel N" stroke="#82ca9d" dot={false} strokeWidth={2} isAnimationActive={false} />
-        <Line type="monotone" dataKey="BHZ" name="Channel Z" stroke="#ffc658" dot={false} strokeWidth={2} isAnimationActive={false} />
-      </LineChart>
-    </ResponsiveContainer>
+    <div className="h-[360px] w-full sm:h-[440px] lg:h-[500px]">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={chartData} margin={{ top: 12, right: 12, left: -12, bottom: 18 }}>
+          <CartesianGrid strokeDasharray="2 6" stroke="#181818" strokeOpacity={0.16} vertical={false} />
+          <Tooltip
+            labelFormatter={(label) => `Sample ${label}`}
+            labelStyle={{ color: "#f3f0e8", fontFamily: "monospace", fontWeight: 700 }}
+            itemStyle={{ fontFamily: "monospace", fontSize: 12, fontWeight: 700 }}
+            contentStyle={{
+              background: "#181818",
+              border: "2px solid #181818",
+              borderRadius: 0,
+              color: "#ffffff",
+            }}
+          />
+          <XAxis
+            dataKey="index"
+            tick={{ fill: "#5d5951", fontFamily: "monospace", fontSize: 11 }}
+            tickLine={false}
+            axisLine={{ stroke: "#181818", strokeWidth: 1.5 }}
+            minTickGap={36}
+          />
+          <YAxis
+            tick={{ fill: "#5d5951", fontFamily: "monospace", fontSize: 11 }}
+            tickLine={false}
+            axisLine={false}
+            width={64}
+            tickFormatter={(value) => Number(value).toExponential(1)}
+          />
+          <Line type="monotone" dataKey="BHE" name="BHE · East" stroke="#e14d32" dot={false} strokeWidth={1.8} isAnimationActive={false} />
+          <Line type="monotone" dataKey="BHN" name="BHN · North" stroke="#1685d1" dot={false} strokeWidth={1.8} isAnimationActive={false} />
+          <Line type="monotone" dataKey="BHZ" name="BHZ · Vertical" stroke="#5c9414" dot={false} strokeWidth={1.8} isAnimationActive={false} />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
   )
 }
 
