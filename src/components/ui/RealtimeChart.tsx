@@ -24,14 +24,12 @@ const formatAmplitude = (value: number) => {
     return `${Number((value / 1000).toFixed(1))}k`
   }
 
-  if (absoluteValue > 0 && absoluteValue < 0.01) {
-    return value.toExponential(1)
-  }
-
   return new Intl.NumberFormat("en-US", {
     maximumFractionDigits: 2,
   }).format(value)
 }
+
+const amplitudeTicks = [-2000, -1000, 0, 1000, 2000]
 
 const RealtimeChart: React.FC<RealtimeChartProps> = ({ ch1, ch2, ch3 }) => {
   const chartData = (ch1 || []).map((value, index) => ({
@@ -82,6 +80,9 @@ const RealtimeChart: React.FC<RealtimeChartProps> = ({ ch1, ch2, ch3 }) => {
             }}
           />
           <YAxis
+            domain={[-2000, 2000]}
+            ticks={amplitudeTicks}
+            allowDataOverflow
             tick={{ fill: "#5d5951", fontFamily: "monospace", fontSize: 11 }}
             tickLine={false}
             axisLine={false}
