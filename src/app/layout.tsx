@@ -14,8 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Rafa Maritza",
-  description: "Portfolio Website",
+  title: "Rafa Maritza — AI & ML Engineer",
+  description:
+    "Portfolio of Rafa Maritza, an AI and machine-learning engineer building reliable intelligent systems and real-time product experiences.",
 };
 
 export default function RootLayout({

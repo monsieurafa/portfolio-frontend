@@ -1,513 +1,345 @@
-"use client"
-
-import { useState, useEffect } from "react"
+import Image from "next/image"
+import Link from "next/link"
 import {
+  ArrowDownRight,
+  ArrowUpRight,
+  BrainCircuit,
+  BriefcaseBusiness,
+  Database,
+  Github,
+  Linkedin,
   Mail,
   MapPin,
-  Github,
-  ExternalLink,
-  Calendar,
-  Building,
-  GraduationCap,
-  Code,
-  Languages,
+  Radio,
+  ScanSearch,
   Sparkles,
-  ArrowRight,
-  Star,
-  Moon,
-  Sun,
-  User,
-  Linkedin,
-  Instagram,
 } from "lucide-react"
-import Image from "next/image"
 import profilePhoto from "/public/profile-photo.jpg"
-import { useTheme } from "@/contexts/ThemeContext";
 
-export default function CVPortfolio() {
-  const [activeSection, setActiveSection] = useState("about")
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const { isDarkMode, toggleDarkMode } = useTheme();
+const projects = [
+  {
+    number: "01",
+    title: "Earthquake detection, from a live seismic feed.",
+    description:
+      "A thesis project that runs the CREIME neural network against live waveform data from Sulawesi. The system streams browser updates over SSE and recovers automatically after backend cold starts.",
+    tags: ["TensorFlow", "FastAPI", "SSE", "Next.js"],
+    href: "/earthquake-detection",
+    icon: Radio,
+    tone: "bg-[#ff6846]",
+    featured: true,
+  },
+  {
+    number: "02",
+    title: "Real-time grocery product detection.",
+    description:
+      "A computer vision interface connecting a Next.js client to a Python and YOLO11 inference service for product detection.",
+    tags: ["YOLO11", "Computer Vision", "Gradio"],
+    href: "/object-detection",
+    icon: ScanSearch,
+    tone: "bg-[#b8f34a]",
+    featured: false,
+  },
+  {
+    number: "03",
+    title: "Predicting chess Elo from move statistics.",
+    description:
+      "A data pipeline and neural network study comparing recurrent and convolutional models for player-rating prediction.",
+    tags: ["Python", "RNN", "CNN", "Data"],
+    href: "https://github.com/monsieurafa/Chess-Elo-Prediction",
+    icon: BrainCircuit,
+    tone: "bg-[#8ed8f8]",
+    featured: false,
+  },
+]
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+const experience = [
+  {
+    period: "Jun — Aug 2024",
+    role: "AI & ML Engineer Intern",
+    company: "Bank Mandiri",
+    detail:
+      "Built sequential prediction models, automated daily inference for Livin' users, and implemented a retraining pipeline to keep model performance current.",
+  },
+  {
+    period: "Aug — Dec 2024",
+    role: "Computer-Aided Instruction Mentor",
+    company: "University of Indonesia",
+    detail:
+      "Mentored two student teams through the design and development of e-learning systems across online and classroom environments.",
+  },
+]
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
-    window.addEventListener("mousemove", handleMouseMove)
-    return () => window.removeEventListener("mousemove", handleMouseMove)
-  }, [])
+const capabilities = [
+  {
+    title: "Machine learning",
+    icon: BrainCircuit,
+    items: "TensorFlow, PyTorch, sequence models, computer vision",
+  },
+  {
+    title: "Software systems",
+    icon: Database,
+    items: "Python, Java, SQL, FastAPI, Django, Spring Boot",
+  },
+  {
+    title: "Product interfaces",
+    icon: Sparkles,
+    items: "Next.js, React, TypeScript, real-time data experiences",
+  },
+]
 
-  const scrollToSection = (sectionId: string) => {
-    setActiveSection(sectionId)
-    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" })
-  }
-
-  const projects = [
-    {
-      title: "Earthquake Detection System",
-      description:
-        "Neural network-based model to detect earthquakes and predict magnitude using seismograph data from Indonesian earthquake stations.",
-      tech: ["Python", "TensorFlow", "Machine Learning", "Real-time Processing"],
-      year: "2025",
-      type: "Thesis Project",
-      link: "/earthquake-detection",
-      isInternal: true,
-      featured: true,
-    },
-    {
-      title: "Chess Elo Prediction",
-      description:
-        "Built data processing pipeline and RNN/CNN models to predict player Elo ratings from chess move statistics.",
-      tech: ["Python", "RNN", "CNN", "Data Processing"],
-      year: "2024",
-      type: "Machine Learning",
-      link: "https://github.com/monsieurafa/Chess-Elo-Prediction",
-      isInternal: false,
-      featured: false,
-    },
-    {
-      title: "Hafiz Helper App",
-      description:
-        "Mobile application to assist users in reading the Qur'an, developed using Test-Driven Development principles.",
-      tech: ["React Native", "TDD", "Mobile Development"],
-      year: "2024",
-      type: "Software Engineering",
-      link: "#",
-      isInternal: false,
-      featured: false,
-    },
-  ]
-
-  const experiences = [
-    {
-      title: "AI & ML Engineer Intern",
-      company: "Bank Mandiri",
-      location: "Jakarta, Indonesia",
-      period: "Jun 2024 - Aug 2024",
-      achievements: [
-        "Developed sequential models to predict future features based on historical data",
-        "Automated daily predictions for all Livin' users, improving operational efficiency",
-        "Implemented automated model retraining pipeline to ensure model performance over time",
-      ],
-    },
-    {
-      title: "Computer-Aided Instruction",
-      company: "Faculty of Computer Science, University of Indonesia",
-      location: "Depok, Indonesia",
-      period: "Aug 2024 - Dec 2024",
-      achievements: [
-        "Mentored two student groups in designing and developing E-learning systems",
-        "Facilitated engaging online and offline learning environments",
-      ],
-    },
-  ]
-
-  const skills = {
-    languages: ["Python", "Java", "JavaScript", "CSS", "HTML", "SQL"],
-    frameworks: ["Django", "SpringBoot", "NextJS", "ReactNative", "TensorFlow", "PyTorch"],
-    soft: ["Communication", "Work Ethic", "Teamwork", "Leadership"],
-  }
-
+export default function Portfolio() {
   return (
-    <div
-      className={`min-h-screen relative overflow-x-hidden transition-colors duration-300 ${isDarkMode ? "dark bg-slate-900 text-white" : "bg-slate-50 text-slate-900"}`}
-    >
-      <div className="fixed inset-0 pointer-events-none">
-        <div
-          className="absolute w-96 h-96 bg-cyan-500/10 dark:bg-emerald-500/10 rounded-full blur-3xl animate-pulse"
-          style={{
-            left: mousePosition.x / 10,
-            top: mousePosition.y / 10,
-            animation: "float 6s ease-in-out infinite",
-          }}
-        />
-        <div
-          className="absolute top-1/4 right-1/4 w-64 h-64 bg-emerald-500/10 dark:bg-cyan-500/10 rounded-full blur-2xl animate-pulse"
-          style={{
-            animation: "float 6s ease-in-out infinite 1s",
-          }}
-        />
-      </div>
-
-      <header className="relative bg-gradient-to-br from-cyan-600 via-cyan-700 to-emerald-600 dark:from-cyan-800 dark:via-cyan-900 dark:to-emerald-800 text-white py-12 sm:py-16 lg:py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=60 height=60 viewBox=0 0 60 60 xmlns=http://www.w3.org/2000/svg%3E%3Cg fill=none fillRule=evenodd%3E%3Cg fill=%23ffffff fillOpacity=0.05%3E%3Ccircle cx=30 cy=30 r=2/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20" />
-
-        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
-          <button
-            onClick={toggleDarkMode}
-            className="bg-white/10 border border-white/20 text-white hover:bg-white/20 backdrop-blur-sm p-2 sm:px-3 sm:py-2 rounded-lg transition-all duration-300"
+    <main className="min-h-screen bg-[#f3f0e8] text-[#181818] selection:bg-[#ff6846] selection:text-[#181818]">
+      <nav className="sticky top-0 z-50 border-b-2 border-[#181818] bg-[#f3f0e8]/95 backdrop-blur-md">
+        <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-4 sm:px-8 lg:px-12">
+          <a href="#top" className="font-mono text-sm font-black uppercase tracking-[0.18em]">
+            Rafa Maritza
+          </a>
+          <div className="hidden items-center gap-8 text-sm font-semibold md:flex">
+            <a className="transition-colors hover:text-[#d9492f]" href="#work">Work</a>
+            <a className="transition-colors hover:text-[#d9492f]" href="#experience">Experience</a>
+            <a className="transition-colors hover:text-[#d9492f]" href="#about">About</a>
+          </div>
+          <a
+            href="mailto:elrafamaritza@gmail.com"
+            className="group inline-flex items-center gap-2 border-2 border-[#181818] bg-[#181818] px-4 py-2 text-sm font-bold text-white transition-transform hover:-translate-y-0.5"
           >
-            {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          </button>
-        </div>
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <div className="animate-fade-in">
-            <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 sm:mb-6 rounded-full border-4 border-white/30 overflow-hidden shadow-lg">
-              <Image
-                src={profilePhoto}
-                alt="Rafa Maritza"
-                width={128}
-                height={128}
-                className="object-cover w-full h-full"
-                priority // Loads the image faster as it's above the fold
-              />
-            </div>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent">
-              Rafa Maritza
-            </h1>
-            <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 text-white/90 px-4">
-              Computer Science Graduate & AI/ML Enthusiast
-            </p>
-            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-6 text-sm md:text-base mb-6 sm:mb-8 px-4">
-              <div className="flex items-center justify-center gap-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
-                <MapPin className="w-4 h-4 flex-shrink-0" />
-                <span className="truncate">Tangerang Selatan, Indonesia</span>
-              </div>
-            </div>
-            <div className="flex justify-center gap-4 mb-6 sm:mb-8">
-              <a
-                href="mailto:elrafamaritza@gmail.com"
-                className="bg-white/10 hover:bg-white/20 p-3 rounded-full backdrop-blur-sm transition-all duration-300 hover:scale-110"
-                aria-label="Email"
-              >
-                <Mail className="w-5 h-5" />
-              </a>
-              <a
-                href="https://github.com/monsieurafa"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white/10 hover:bg-white/20 p-3 rounded-full backdrop-blur-sm transition-all duration-300 hover:scale-110"
-                aria-label="GitHub"
-              >
-                <Github className="w-5 h-5" />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/rafa-maritza-858447226/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white/10 hover:bg-white/20 p-3 rounded-full backdrop-blur-sm transition-all duration-300 hover:scale-110"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
-              <a
-                href="https://instagram.com/rafa.tza"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white/10 hover:bg-white/20 p-3 rounded-full backdrop-blur-sm transition-all duration-300 hover:scale-110"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-            </div>
-            <button
-              className="bg-white text-cyan-600 hover:bg-white/90 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-105 flex items-center gap-3 mx-auto"
-              onClick={() => scrollToSection("projects")}
-            >
-              <Sparkles className="w-5 h-5" />
-              <span className="hidden sm:inline">Explore My Work</span>
-              <span className="sm:hidden">My Work</span>
-              <ArrowRight className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <nav
-        className={`sticky top-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? "backdrop-blur-md bg-white/80 dark:bg-slate-900/80 shadow-lg"
-            : "bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm"
-        } border-b border-slate-200 dark:border-slate-700`}
-      >
-        <div className="container mx-auto px-4">
-          <div className="flex justify-center sm:justify-center overflow-x-auto scrollbar-hide py-4">
-            <div className="flex space-x-2 sm:space-x-8 min-w-max">
-              {["about", "experience", "projects", "skills"].map((section) => (
-                <button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
-                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full transition-all duration-300 capitalize font-medium whitespace-nowrap ${
-                    activeSection === section
-                      ? "bg-cyan-600 text-white shadow-lg scale-105"
-                      : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-cyan-100 dark:hover:bg-cyan-900/20 hover:scale-105"
-                  }`}
-                >
-                  {section}
-                </button>
-              ))}
-            </div>
-          </div>
+            Let&apos;s talk
+            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
         </div>
       </nav>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12 sm:space-y-20 relative z-10">
-        <section id="about" className="scroll-mt-20">
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-500 border border-slate-200 dark:border-slate-700">
-            <div className="flex items-center gap-3 text-xl sm:text-2xl font-bold mb-6">
-              <div className="p-2 bg-cyan-500/10 rounded-lg">
-                <GraduationCap className="w-5 sm:w-6 h-5 sm:h-6 text-cyan-600" />
+      <section id="top" className="relative overflow-hidden border-b-2 border-[#181818]">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.055]"
+          style={{
+            backgroundImage:
+              "linear-gradient(#181818 1px, transparent 1px), linear-gradient(90deg, #181818 1px, transparent 1px)",
+            backgroundSize: "44px 44px",
+          }}
+        />
+        <div className="relative mx-auto grid max-w-[1440px] lg:grid-cols-[1.12fr_0.88fr]">
+          <div className="flex min-h-[680px] flex-col justify-between border-[#181818] px-5 py-12 sm:px-8 sm:py-16 lg:border-r-2 lg:px-12 lg:py-20">
+            <div>
+              <div className="mb-10 flex flex-wrap items-center gap-3 font-mono text-xs font-bold uppercase tracking-[0.18em]">
+                <span className="inline-flex items-center gap-2 border-2 border-[#181818] bg-[#b8f34a] px-3 py-2">
+                  <span className="h-2 w-2 animate-pulse rounded-full bg-[#181818]" />
+                  Open to opportunities
+                </span>
+                <span className="inline-flex items-center gap-2 px-1 py-2">
+                  <MapPin className="h-4 w-4" /> Indonesia
+                </span>
               </div>
-              About Me
+
+              <p className="mb-5 max-w-xl text-lg font-semibold text-[#4d4a43] sm:text-xl">
+                AI engineer · software builder · curious generalist
+              </p>
+              <h1 className="max-w-5xl text-[clamp(4rem,10vw,9rem)] font-black leading-[0.82] tracking-[-0.075em]">
+                Building
+                <span className="block text-[#d9492f]">intelligent</span>
+                systems.
+              </h1>
             </div>
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-                <div className="space-y-4">
-                  <h3 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
-                    <Star className="w-4 sm:w-5 h-4 sm:h-5 text-emerald-500" />
-                    Education
-                  </h3>
-                  <div className="bg-slate-100 dark:bg-slate-700 p-4 rounded-lg">
-                    <h4 className="font-medium text-base sm:text-lg">Bachelor in Computer Science</h4>
-                    <p className="text-slate-600 dark:text-slate-300 font-medium">University of Indonesia</p>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Sept 2021 - July 2025 • GPA: 3.43/4.0</p>
-                  </div>
+
+            <div className="mt-16 grid gap-8 border-t-2 border-[#181818] pt-8 sm:grid-cols-[1fr_auto] sm:items-end">
+              <p className="max-w-2xl text-lg leading-relaxed text-[#4d4a43] sm:text-xl">
+                I turn machine-learning research into reliable, understandable products—from live seismic inference to computer vision.
+              </p>
+              <a href="#work" className="group inline-flex w-fit items-center gap-3 text-base font-black uppercase tracking-[0.08em]">
+                Selected work
+                <span className="grid h-11 w-11 place-items-center rounded-full border-2 border-[#181818] bg-[#ff6846] transition-transform group-hover:translate-y-1">
+                  <ArrowDownRight className="h-5 w-5" />
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <div className="relative min-h-[560px] bg-[#8ed8f8] p-5 sm:p-8 lg:min-h-[760px] lg:p-12">
+            <div className="absolute right-5 top-5 z-10 border-2 border-[#181818] bg-[#f3f0e8] px-3 py-2 font-mono text-xs font-bold uppercase tracking-[0.14em] sm:right-8 sm:top-8 lg:right-12 lg:top-12">
+              UI Computer Science · 2025
+            </div>
+            <div className="relative h-full min-h-[520px] overflow-hidden border-2 border-[#181818] bg-[#181818] shadow-[12px_12px_0_#181818] lg:min-h-[660px]">
+              <Image
+                src={profilePhoto}
+                alt="Rafa Maritza in his University of Indonesia graduation jacket"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 45vw"
+                className="object-cover object-[52%_42%] grayscale-[15%]"
+              />
+              <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between bg-gradient-to-t from-black/85 via-black/45 to-transparent p-6 pt-32 text-white">
+                <div>
+                  <p className="font-mono text-xs uppercase tracking-[0.18em] text-white/70">Currently exploring</p>
+                  <p className="mt-2 max-w-xs text-xl font-bold leading-tight">Reliable AI systems and real-time interfaces.</p>
                 </div>
-                <div className="space-y-4">
-                  <h3 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
-                    <Languages className="w-4 sm:w-5 h-4 sm:h-5 text-emerald-500" />
-                    Languages
-                  </h3>
-                  <div className="flex flex-wrap gap-3">
-                    <span className="px-4 py-2 bg-cyan-600 text-white rounded-full text-sm font-medium">
-                      Indonesian
+                <span className="hidden font-mono text-xs uppercase tracking-[0.14em] sm:block">Tangerang Selatan</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="work" className="border-b-2 border-[#181818] px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+        <div className="mx-auto max-w-[1440px]">
+          <div className="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div>
+              <p className="mb-4 font-mono text-xs font-black uppercase tracking-[0.2em] text-[#d9492f]">Selected projects</p>
+              <h2 className="text-5xl font-black tracking-[-0.055em] sm:text-7xl">Work that moves.</h2>
+            </div>
+            <p className="max-w-md text-lg leading-relaxed text-[#5d5951]">
+              Research, engineering, and product thinking brought together in systems you can actually try.
+            </p>
+          </div>
+
+          <div className="grid border-l-2 border-t-2 border-[#181818] lg:grid-cols-2">
+            {projects.map((project) => {
+              const Icon = project.icon
+              return (
+                <Link
+                  key={project.number}
+                  href={project.href}
+                  target={project.href.startsWith("http") ? "_blank" : undefined}
+                  rel={project.href.startsWith("http") ? "noreferrer" : undefined}
+                  className={`group relative flex min-h-[420px] flex-col justify-between border-b-2 border-r-2 border-[#181818] p-7 transition-colors sm:p-10 ${
+                    project.featured ? "lg:row-span-2 lg:min-h-[840px]" : "bg-[#f3f0e8] hover:bg-white"
+                  }`}
+                >
+                  {project.featured && <div className="absolute inset-0 bg-[#ff6846]" />}
+                  <div className="relative flex items-start justify-between">
+                    <span className="font-mono text-sm font-black">/{project.number}</span>
+                    <span className={`grid h-14 w-14 place-items-center rounded-full border-2 border-[#181818] ${project.tone}`}>
+                      <Icon className="h-7 w-7" />
                     </span>
-                    <span className="px-4 py-2 bg-cyan-600 text-white rounded-full text-sm font-medium">English</span>
                   </div>
-                </div>
-              </div>
-              <div>
-                <h3 className="text-lg sm:text-xl font-semibold mb-4">Relevant Coursework</h3>
-                <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
-                  Operating Systems, Software Engineering, Data Structures & Algorithms, Algorithm Design & Analysis,
-                  Platform-Based Programming, Advanced Programming, Databases, Machine Learning, Computer-Aided
-                  Instruction, Data Mining, Information Retrieval
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="experience" className="scroll-mt-20">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-12 flex items-center gap-3">
-            <div className="p-2 bg-cyan-500/10 rounded-lg">
-              <Building className="w-6 sm:w-8 h-6 sm:h-8 text-cyan-600" />
-            </div>
-            Work Experience
-          </h2>
-          <div className="space-y-6 sm:space-y-8">
-            {experiences.map((exp, index) => (
-              <div
-                key={index}
-                className="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all duration-500 border border-slate-200 dark:border-slate-700 group"
-              >
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-4">
-                  <div className="flex-1">
-                    <h3 className="text-lg sm:text-xl font-bold group-hover:text-cyan-600 transition-colors">
-                      {exp.title}
+                  <div className="relative mt-20">
+                    <h3 className={`font-black leading-[0.95] tracking-[-0.05em] ${project.featured ? "text-5xl sm:text-7xl" : "text-4xl sm:text-5xl"}`}>
+                      {project.title}
                     </h3>
-                    <p className="text-base sm:text-lg font-medium text-slate-600 dark:text-slate-300">{exp.company}</p>
-                  </div>
-                  <div className="flex flex-col sm:text-right text-sm text-slate-500 dark:text-slate-400 gap-2">
-                    <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full w-fit">
-                      <Calendar className="w-4 h-4" />
-                      <span className="whitespace-nowrap">{exp.period}</span>
+                    <p className="mt-6 max-w-2xl text-base leading-relaxed text-[#37342f] sm:text-lg">{project.description}</p>
+                    <div className="mt-8 flex flex-wrap items-center gap-2">
+                      {project.tags.map((tag) => (
+                        <span key={tag} className="border border-[#181818] px-3 py-1.5 font-mono text-[11px] font-bold uppercase tracking-[0.1em]">
+                          {tag}
+                        </span>
+                      ))}
                     </div>
-                    <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full w-fit">
-                      <MapPin className="w-4 h-4" />
-                      <span className="whitespace-nowrap">{exp.location}</span>
+                    <div className="mt-10 flex items-center gap-2 font-bold">
+                      View project
+                      <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                     </div>
                   </div>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section id="experience" className="border-b-2 border-[#181818] bg-[#181818] px-5 py-20 text-white sm:px-8 lg:px-12 lg:py-28">
+        <div className="mx-auto grid max-w-[1440px] gap-16 lg:grid-cols-[0.75fr_1.25fr]">
+          <div>
+            <p className="mb-4 font-mono text-xs font-black uppercase tracking-[0.2em] text-[#b8f34a]">Experience</p>
+            <h2 className="text-5xl font-black leading-[0.95] tracking-[-0.055em] sm:text-7xl">Where I&apos;ve contributed.</h2>
+            <p className="mt-8 max-w-md text-lg leading-relaxed text-white/60">
+              Working across model development, automated pipelines, and mentoring software teams.
+            </p>
+          </div>
+
+          <div className="border-t border-white/30">
+            {experience.map((item, index) => (
+              <article key={item.role} className="grid gap-5 border-b border-white/30 py-9 sm:grid-cols-[110px_1fr] sm:gap-8">
+                <span className="font-mono text-xs font-bold uppercase tracking-[0.12em] text-[#8ed8f8]">{item.period}</span>
+                <div>
+                  <div className="mb-4 flex items-start gap-4">
+                    <span className="font-mono text-xs text-white/40">0{index + 1}</span>
+                    <div>
+                      <h3 className="text-2xl font-black tracking-[-0.025em] sm:text-3xl">{item.role}</h3>
+                      <p className="mt-1 text-lg font-semibold text-[#b8f34a]">{item.company}</p>
+                    </div>
+                  </div>
+                  <p className="max-w-2xl pl-9 leading-relaxed text-white/65">{item.detail}</p>
                 </div>
-                <ul className="space-y-3">
-                  {exp.achievements.map((achievement, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <span className="w-2 h-2 bg-cyan-600 rounded-full mt-2 flex-shrink-0"></span>
-                      <span className="leading-relaxed text-sm sm:text-base">{achievement}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              </article>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section id="projects" className="scroll-mt-20">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-12">Projects</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {projects.map((project, index) => (
-              <div
-                key={index}
-                className={`bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500 border border-slate-200 dark:border-slate-700 hover:-translate-y-2 group ${
-                  project.featured
-                    ? "ring-2 ring-cyan-500/20 bg-gradient-to-br from-white to-cyan-500/5 dark:from-slate-800 dark:to-cyan-500/5"
-                    : ""
-                }`}
-              >
-                <div className="flex justify-between items-start mb-3">
-                  <span
-                    className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      project.featured
-                        ? "bg-cyan-600 text-white"
-                        : "bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300"
-                    }`}
-                  >
-                    {project.type}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    {project.featured && <Star className="w-4 h-4 text-emerald-500 fill-current" />}
-                    <span className="text-sm text-slate-500 dark:text-slate-400">{project.year}</span>
-                  </div>
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold mb-3 group-hover:text-cyan-600 transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4 text-sm sm:text-base">
-                  {project.description}
-                </p>
-                <div className="space-y-4">
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.map((tech, i) => (
-                      <span
-                        key={i}
-                        className="px-2 py-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded text-xs hover:bg-cyan-500/20 transition-colors"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                  {project.link !== "#" && (
-                    <button
-                      className={`w-full py-3 px-4 rounded-lg font-medium transition-all duration-300 group-hover:scale-105 flex items-center justify-center gap-2 text-sm sm:text-base ${
-                        project.featured
-                          ? "bg-cyan-600 text-white hover:bg-cyan-700"
-                          : "border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
-                      }`}
-                      onClick={() => {
-                        if (project.isInternal) {
-                          window.location.href = project.link
-                        } else {
-                          window.open(project.link, "_blank")
-                        }
-                      }}
-                    >
-                      {project.isInternal ? (
-                        <>
-                          View Project
-                          <ExternalLink className="w-4 h-4" />
-                        </>
-                      ) : (
-                        <>
-                          <Github className="w-4 h-4" />
-                          View on GitHub
-                        </>
-                      )}
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section id="skills" className="scroll-mt-20">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-12">Skills</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500 border border-slate-200 dark:border-slate-700 group">
-              <h3 className="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2 group-hover:text-cyan-600 transition-colors">
-                <Code className="w-5 h-5" />
-                Programming Languages
-              </h3>
-              <div className="flex flex-wrap gap-3">
-                {skills.languages.map((skill, i) => (
-                  <span
-                    key={i}
-                    className="px-3 py-1 bg-cyan-600 text-white rounded-full text-sm font-medium hover:scale-105 transition-transform"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
+      <section id="about" className="border-b-2 border-[#181818] px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+        <div className="mx-auto max-w-[1440px]">
+          <div className="grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+            <div>
+              <p className="mb-4 font-mono text-xs font-black uppercase tracking-[0.2em] text-[#d9492f]">About & capabilities</p>
+              <h2 className="text-5xl font-black leading-[0.95] tracking-[-0.055em] sm:text-7xl">Grounded in code. Driven by questions.</h2>
             </div>
-
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500 border border-slate-200 dark:border-slate-700 group">
-              <h3 className="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2 group-hover:text-cyan-600 transition-colors">
-                <Building className="w-5 h-5" />
-                Frameworks & Tools
-              </h3>
-              <div className="flex flex-wrap gap-3">
-                {skills.frameworks.map((skill, i) => (
-                  <span
-                    key={i}
-                    className="px-3 py-1 bg-cyan-600 text-white rounded-full text-sm font-medium hover:scale-105 transition-transform"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500 border border-slate-200 dark:border-slate-700 group">
-              <h3 className="text-lg sm:text-xl font-bold mb-4 flex items-center gap-2 group-hover:text-cyan-600 transition-colors">
-                <Sparkles className="w-5 h-5" />
-                Soft Skills
-              </h3>
-              <div className="flex flex-wrap gap-3">
-                {skills.soft.map((skill, i) => (
-                  <span
-                    key={i}
-                    className="px-3 py-1 bg-cyan-600 text-white rounded-full text-sm font-medium hover:scale-105 transition-transform"
-                  >
-                    {skill}
-                  </span>
-                ))}
+            <div>
+              <p className="text-2xl font-semibold leading-snug tracking-[-0.025em] sm:text-3xl">
+                I&apos;m a Computer Science graduate from the University of Indonesia who enjoys the full path from messy data to a useful interface.
+              </p>
+              <div className="mt-10 grid gap-px border-2 border-[#181818] bg-[#181818] md:grid-cols-3">
+                <div className="bg-[#b8f34a] p-6">
+                  <p className="font-mono text-xs font-black uppercase tracking-[0.15em]">Education</p>
+                  <p className="mt-8 text-2xl font-black">B.Sc. Computer Science</p>
+                  <p className="mt-2 text-sm">University of Indonesia · 2025</p>
+                </div>
+                <div className="bg-[#8ed8f8] p-6">
+                  <p className="font-mono text-xs font-black uppercase tracking-[0.15em]">Focus</p>
+                  <p className="mt-8 text-2xl font-black">Applied AI systems</p>
+                  <p className="mt-2 text-sm">ML engineering · product development</p>
+                </div>
+                <div className="bg-[#ff6846] p-6">
+                  <p className="font-mono text-xs font-black uppercase tracking-[0.15em]">Languages</p>
+                  <p className="mt-8 text-2xl font-black">Indonesian · English</p>
+                  <p className="mt-2 text-sm">Collaboration across technical teams</p>
+                </div>
               </div>
             </div>
           </div>
-        </section>
-      </div>
 
-      <footer className="bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 border-t border-slate-200 dark:border-slate-700 py-8 sm:py-12 mt-12 sm:mt-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg">
-            © 2025 Rafa Maritza. Built with Next.js and Tailwind CSS.
-          </p>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
-            Crafted with passion for innovation and excellence.
-          </p>
+          <div className="mt-16 grid border-l-2 border-t-2 border-[#181818] md:grid-cols-3">
+            {capabilities.map((capability) => {
+              const Icon = capability.icon
+              return (
+                <div key={capability.title} className="border-b-2 border-r-2 border-[#181818] bg-white/30 p-7 sm:p-9">
+                  <Icon className="h-8 w-8" />
+                  <h3 className="mt-12 text-2xl font-black tracking-[-0.03em]">{capability.title}</h3>
+                  <p className="mt-3 leading-relaxed text-[#5d5951]">{capability.items}</p>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#b8f34a] px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+        <div className="mx-auto max-w-[1440px]">
+          <div className="flex flex-col justify-between gap-12 lg:flex-row lg:items-end">
+            <div>
+              <p className="mb-5 font-mono text-xs font-black uppercase tracking-[0.2em]">Have a problem worth solving?</p>
+              <h2 className="max-w-5xl text-6xl font-black leading-[0.88] tracking-[-0.065em] sm:text-8xl lg:text-9xl">Let&apos;s build something useful.</h2>
+            </div>
+            <div className="flex shrink-0 flex-col gap-3">
+              <a href="mailto:elrafamaritza@gmail.com" className="group inline-flex items-center justify-between gap-12 border-2 border-[#181818] bg-[#181818] px-6 py-4 font-bold text-white">
+                Email me <Mail className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </a>
+              <a href="https://github.com/monsieurafa" target="_blank" rel="noreferrer" className="group inline-flex items-center justify-between gap-12 border-2 border-[#181818] px-6 py-4 font-bold transition-colors hover:bg-white/40">
+                GitHub <Github className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </a>
+              <a href="https://www.linkedin.com/in/rafa-maritza-858447226/" target="_blank" rel="noreferrer" className="group inline-flex items-center justify-between gap-12 border-2 border-[#181818] px-6 py-4 font-bold transition-colors hover:bg-white/40">
+                LinkedIn <Linkedin className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="border-t-2 border-[#181818] bg-[#b8f34a] px-5 py-6 sm:px-8 lg:px-12">
+        <div className="mx-auto flex max-w-[1440px] flex-col gap-3 font-mono text-xs font-bold uppercase tracking-[0.12em] sm:flex-row sm:items-center sm:justify-between">
+          <span>© 2026 Rafa Maritza</span>
+          <span className="inline-flex items-center gap-2"><BriefcaseBusiness className="h-4 w-4" /> AI · ML · Software</span>
         </div>
       </footer>
-
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-          animation: fade-in 1s ease-out;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
-    </div>
+    </main>
   )
 }
