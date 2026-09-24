@@ -16,6 +16,7 @@ import {
   Zap,
 } from "lucide-react"
 import RealtimeChart from "@/components/ui/RealtimeChart"
+import SeismoPrint from "@/components/ui/SeismoPrint"
 
 type Prediction = {
   isEvent: number
@@ -281,11 +282,34 @@ export default function EarthquakeDetection() {
         </div>
       </section>
 
+      <section className="border-b-2 border-[#181818] bg-[#8ed8f8] px-5 py-16 sm:px-8 lg:px-12 lg:py-24">
+        <div className="mx-auto max-w-[1440px]">
+          <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div>
+              <p className="mb-4 font-mono text-xs font-black uppercase tracking-[0.2em] text-[#9e301f]">03 / SeismoPrint</p>
+              <h2 className="max-w-4xl text-5xl font-black leading-[0.92] tracking-[-0.055em] sm:text-7xl">Make a print from the planet.</h2>
+            </div>
+            <p className="max-w-md text-base font-medium leading-relaxed text-[#263e49] sm:text-lg">
+              Freeze the latest live signal into a generative data poster, choose a visual system, and export the result at full resolution.
+            </p>
+          </div>
+
+          <SeismoPrint
+            ch1={ch1}
+            ch2={ch2}
+            ch3={ch3}
+            stationId={stationId}
+            prediction={prediction}
+            capturedAt={lastUpdate}
+          />
+        </div>
+      </section>
+
       <section className="border-b-2 border-[#181818] bg-[#181818] px-5 py-16 text-white sm:px-8 lg:px-12 lg:py-24">
         <div className="mx-auto max-w-[1440px]">
           <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
             <div>
-              <p className="mb-4 font-mono text-xs font-black uppercase tracking-[0.2em] text-[#ff6846]">03 / Under the hood</p>
+              <p className="mb-4 font-mono text-xs font-black uppercase tracking-[0.2em] text-[#ff6846]">04 / Under the hood</p>
               <h2 className="text-5xl font-black leading-[0.92] tracking-[-0.055em] sm:text-7xl">From ground motion to inference.</h2>
               <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/65">
                 This thesis demo connects a live seismic feed to the CREIME model and streams each result to the browser. It presents research output and is not an operational early-warning service.
